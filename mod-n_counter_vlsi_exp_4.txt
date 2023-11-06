@@ -1,0 +1,90 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_unsigned.ALL;
+use IEEE.NUMERIC_STD.ALL;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+entity mod5ex is
+Port ( clk : in STD_LOGIC;
+clr : in STD_LOGIC;
+q : inout STD_LOGIC_VECTOR (2 downto 0));
+end mod5ex;
+architecture Behavioral of mod5ex is
+signal count: std_logic_vector(2 downto 0);
+begin
+process(clk)
+begin
+if (clr='1') then count <= "000";
+elsif (rising_edge (clk)) then
+if (count="100")
+then count <= "000";
+else
+count<=count+ 1;
+end if;
+end if;
+end process;
+q<=count;
+end Behavioral;
+
+--------------------------------------------------------------------------------testbench-----------------------------------------------------------------------------------------------
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
+ENTITY mod5test IS
+END mod5test;
+ARCHITECTURE behavior OF mod5test IS
+-- Component Declaration for the Unit Under Test (UUT)
+COMPONENT mod5ex
+PORT(
+clk : IN std_logic;
+clr : IN std_logic;
+q : INOUT std_logic_vector(2 downto 0)
+);
+END COMPONENT;
+--Inputs
+signal clk : std_logic := '0';
+signal clr : std_logic := '0';
+--BiDirs
+signal q : std_logic_vector(2 downto 0);
+-- Clock period definitions
+constant clk_period : time := 10 ns;
+BEGIN
+-- Instantiate the Unit Under Test (UUT)
+uut: mod5ex PORT MAP (
+clk => clk,
+clr => clr,
+q => q
+);
+-- Clock process definitions
+clk_process :process
+begin
+clk <= '0';
+wait for 10 ns;
+clk <= '1';
+wait for 10 ns;
+end process;
+-- Stimulus process
+stim_proc: process
+begin
+clr<='1';
+-- hold reset state for 100 ns.
+wait for 20 ns;
+clr<='0';
+-- hold reset state for 100 ns.
+wait for 20 ns;
+-- hold reset state for 100 ns.
+-- wait for 100 ns;
+-- wait for clk_period*10
+-- insert stimulus here
+wait;
+end process;
+
+END;

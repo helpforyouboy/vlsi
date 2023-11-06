@@ -1,0 +1,112 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity adder is
+    Port ( a : in  STD_LOGIC;
+           b : in  STD_LOGIC;
+           s : out  STD_LOGIC;
+           c : out  STD_LOGIC);
+end adder;
+
+architecture Behavioral of adder is
+
+begin
+s<=a xor b;
+c<=a and b;
+
+end Behavioral;
+
+---------------------------------------------------------------------------------------test bench---------------------------------------------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ 
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
+ 
+ENTITY hadder IS
+END hadder;
+ 
+ARCHITECTURE behavior OF hadder IS 
+ 
+    -- Component Declaration for the Unit Under Test (UUT)
+ 
+    COMPONENT adder
+    PORT(
+         a : IN  std_logic;
+         b : IN  std_logic;
+         s : OUT  std_logic;
+         c : OUT  std_logic
+        );
+    END COMPONENT;
+    
+
+   --Inputs
+   signal a : std_logic := '0';
+   signal b : std_logic := '0';
+
+ 	--Outputs
+   signal s : std_logic;
+   signal c : std_logic;
+   -- No clocks detected in port list. Replace <clock> below with 
+   -- appropriate port name 
+ 
+   --constant <clock>_period : time := 10 ns;
+ 
+BEGIN
+ 
+	-- Instantiate the Unit Under Test (UUT)
+   uut: adder PORT MAP (
+          a => a,
+          b => b,
+          s => s,
+          c => c
+        );
+
+   -- Clock process definitions
+--   <clock>_process :process
+--   begin
+--		<clock> <= '0';
+--		wait for <clock>_period/2;
+--		<clock> <= '1';
+--		wait for <clock>_period/2;
+--   end process;
+-- 
+
+   -- Stimulus process
+   stim_proc: process
+   begin	
+a<='0';
+b<='0';	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+a<='0';
+b<='1';	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+a<='1';
+b<='0';	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+a<='1';
+b<='1';	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+
+      --wait for <clock>_period*10;
+
+      -- insert stimulus here 
+
+      wait;
+   end process;
+
+END;

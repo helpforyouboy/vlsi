@@ -1,0 +1,107 @@
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+entity shiftreg is
+Port ( si : in STD_LOGIC;
+clk : in STD_LOGIC;
+so : out STD_LOGIC;
+pin : in STD_LOGIC_VECTOR (3 downto 0);
+po : out STD_LOGIC_VECTOR (3 downto 0);
+sel : in STD_LOGIC_VECTOR (1 downto 0));
+end shiftreg;
+architecture Behavioral of shiftreg is
+signal temp:STD_LOGIC_VECTOR( 3 downto 0);
+begin
+process(clk)
+begin
+if(clk'event and clk='1')then
+case sel is
+when"00"=> temp<= si&temp(3 downto 1);
+so <=temp(3);
+when"01"=> temp<= si&temp(3 downto 1);
+po<=temp;
+when others=>null;
+end case;
+end if;
+end process;
+end Behavioral;
+
+
+
+------------------------------------------------------------------testbench:-----------------------------------------------------------------------------------------
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
+ENTITY shifttest IS
+END shifttest;
+ARCHITECTURE behavior OF shifttest IS
+-- Component Declaration for the Unit Under Test (UUT)
+COMPONENT shiftreg
+PORT(
+si : IN std_logic;
+clk : IN std_logic;
+so : OUT std_logic;
+pin : IN std_logic_vector(3 downto 0);
+po : OUT std_logic_vector(3 downto 0);
+sel : IN std_logic_vector(1 downto 0)
+);
+END COMPONENT;
+--Inputs
+signal si : std_logic := '0';
+signal clk : std_logic := '0';
+signal pin : std_logic_vector(3 downto 0) := (others => '0');
+signal sel : std_logic_vector(1 downto 0) := (others => '0');
+--Outputs
+signal so : std_logic;
+signal po : std_logic_vector(3 downto 0);
+-- Clock period definitions
+constant clk_period : time := 10 ns;
+BEGIN
+-- Instantiate the Unit Under Test (UUT)
+uut: shiftreg PORT MAP (
+si => si,
+clk => clk,
+so => so,
+pin => pin,
+po => po,
+sel => sel
+);
+-- Clock process definitions
+clk_process :process
+begin
+clk <= '0';
+wait for clk_period/2;
+clk <= '1';
+wait for clk_period/2;
+end process;
+-- Stimulus process
+stim_proc: process
+begin
+sel<="00";
+si<='1';
+-- hold reset state for 100 ns.
+wait for 100 ns;
+sel<="01";
+si<='1';
+wait for 100 ns;
+sel<="10";
+pin<="1100";
+wait for 100 ns;
+sel<="11";
+pin<="1100";
+--=wait for clk_period*10;
+-- insert stimulus here
+wait;
+end process;
+END;
+

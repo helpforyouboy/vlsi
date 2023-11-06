@@ -1,0 +1,171 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+use IEEE.STD_LOGIC_unsigned.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity vlsi is
+    Port ( a : in  STD_LOGIC_VECTOR (3 downto 0);
+           b : in  STD_LOGIC_VECTOR (3 downto 0);
+           sel : in  STD_LOGIC_VECTOR (2 downto 0);
+           y : out  STD_LOGIC_VECTOR (3 downto 0));
+end vlsi;
+
+architecture Behavioral of vlsi is
+
+begin
+process(a,b,sel)
+begin 
+case sel is 
+
+when"000"=>y<=a+b;
+when"001"=>y<=a-b;
+when"010"=>y<=a and b;
+when"011"=>y<=a or b;
+when"100"=>y<=a nand b;
+when"101"=>y<=a nor b;
+when"110"=>y<=not a;
+when"111"=>y<=a;
+when others=>null;
+end case;
+end process;
+end Behavioral;
+
+---------------------------------------------------------------------------------------testbench--------------------------------------------------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ 
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
+ 
+ENTITY ssss IS
+END ssss;
+ 
+ARCHITECTURE behavior OF ssss IS 
+ 
+    -- Component Declaration for the Unit Under Test (UUT)
+ 
+    COMPONENT vlsi
+    PORT(
+         a : IN  std_logic_vector(3 downto 0);
+         b : IN  std_logic_vector(3 downto 0);
+         sel : IN  std_logic_vector(2 downto 0);
+         y : OUT  std_logic_vector(3 downto 0)
+        );
+    END COMPONENT;
+    
+
+   --Inputs
+   signal a : std_logic_vector(3 downto 0) := (others => '0');
+   signal b : std_logic_vector(3 downto 0) := (others => '0');
+   signal sel : std_logic_vector(2 downto 0) := (others => '0');
+
+ 	--Outputs
+   signal y : std_logic_vector(3 downto 0);
+   -- No clocks detected in port list. Replace <clock> below with 
+   -- appropriate port name 
+ 
+--   constant <clock>_period : time := 10 ns;
+ 
+BEGIN
+ 
+	-- Instantiate the Unit Under Test (UUT)
+   uut: vlsi PORT MAP (
+          a => a,
+          b => b,
+          sel => sel,
+          y => y
+        );
+
+   -- Clock process definitions
+--   <clock>_process :process
+--   begin
+--		<clock> <= '0';
+--		wait for <clock>_period/2;
+--		<clock> <= '1';
+--		wait for <clock>_period/2;
+--   end process;
+-- 
+
+   -- Stimulus process
+   stim_proc: process
+   begin		
+	a<="0101";
+	b<="0100";
+	sel<="000";
+	
+	 -- hold reset state for 100 ns.
+      wait for 100 ns;	
+	a<="0101";
+	b<="0100";
+	sel<="001";
+	
+	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+		a<="0101";
+	b<="0100";
+	sel<="010";
+	
+	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+a<="0101";
+	b<="0100";
+	sel<="011";
+	
+	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+		a<="0101";
+	b<="0100";
+	sel<="100";
+	
+	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+		a<="0101";
+	b<="0100";
+	sel<="101";
+	
+	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;
+a<="0101";
+	b<="0100";
+	sel<="110";
+	
+	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+		a<="0101";
+	b<="0100";
+	sel<="111";
+	
+	
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
+
+
+
+
+
+
+--      wait for <clock>_period*10;
+
+      -- insert stimulus here 
+
+      wait;
+   end process;
+
+END;
+
